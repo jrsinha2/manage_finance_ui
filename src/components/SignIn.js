@@ -13,17 +13,36 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Copyright from './Copyright';
-import axios, { Axios } from 'axios';
+import axios from 'axios';
 const theme = createTheme();
 
 export default function SignIn() {
+  function callSignIn(email, password){
+    console.log('calling api');
+    axios.post(process.env.REACT_APP_SIGN_IN_ENDPOINT, {
+    email: email,
+    password: password
+  })
+  .then((response) => {
+    console.log('response :', response)
+    //transition to dashboard page
+  })
+  .catch((error) => {
+    console.log('error = ', error)
+    alert('email or password wrong')
+  })
+  console.log('returning from signUp user');
+  }
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+    let email =  data.get('email');
+    let password = data.get('password');
     console.log({
-      email: data.get('email'),
-      password: data.get('password')
+      email, password
     });
+    callSignIn(email,password)
 
   };
 
